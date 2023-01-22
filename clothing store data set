@@ -1,0 +1,29 @@
+-- create a table for a clothing store data base 
+CREATE TABLE clothing_store (id INTEGER PRIMARY KEY ,name TEXT, color TEXT, conidtion text, price INTEGER);
+
+INSERT INTO clothing_store VALUES(1,"pants","red","new",10);
+INSERT INTO clothing_store VALUES(2,"T-shirt","blue","new",15);
+INSERT INTO clothing_store VALUES(3,"shirt","green","new",20);
+INSERT INTO clothing_store VALUES(4,"shirt","green/ble","new",25);
+INSERT INTO clothing_store VALUES(5,"shorts","orange","new",10);
+INSERT INTO clothing_store VALUES(6,"long_shirt","green","new",25);
+INSERT INTO clothing_store VALUES(7,"pants","yellow","new",30);
+INSERT INTO clothing_store VALUES(8,"braclet","green","new",40);
+INSERT INTO clothing_store VALUES(9,"hat","green","new",55);
+INSERT INTO clothing_store VALUES(10,"jacket","black","new",70);
+INSERT INTO clothing_store VALUES(11,"glasses","gold","new",90);
+INSERT INTO clothing_store VALUES(12,"socks","white","new",40);
+INSERT INTO clothing_store VALUES(13,"hat","brown","new",30);
+INSERT INTO clothing_store VALUES(14,"boxers","blue","new",20);
+INSERT INTO clothing_store VALUES(15,"shoes","white","new",340);
+
+-- display data base order by price in decending 
+SELECT * FROM clothing_store
+ORDER BY price DESC;
+
+-- wanted to know what unique items i have in the store 
+SELECT DISTINCT (name) FROM clothing_store;
+
+
+
+
