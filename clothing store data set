@@ -24,6 +24,8 @@ ORDER BY price DESC;
 -- wanted to know what unique items i have in the store 
 SELECT DISTINCT (name) FROM clothing_store;
 
-
-
+--what is the avg price of name = shirt? 
+SELECT AVG(price) "avg item price"
+FROM clothing_store
+where name='shirt';
 
