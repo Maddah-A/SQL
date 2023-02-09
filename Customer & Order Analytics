@@ -1,13 +1,13 @@
 #In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data.
 
---How many orders were placed in January?
+-- 1 How many orders were placed in January?
 
 SELECT COUNT (orderID)  FROM JanSales 
 WHERE LENGTH (OrderID) = 6
 AND orderID  <> 'Order ID ';
 
 
---How many of those orders were for an iPhone?
+-- 2 How many of those orders were for an iPhone?
 
 SELECT COUNT (orderID)  FROM JanSales 
 WHERE Product = 'iPhone'
@@ -15,7 +15,7 @@ AND LENGTH (OrderID) = 6
 AND orderID  <> 'Order ID '
 ;
 
---Select the customer account numbers for all the orders that were placed in February
+-- 3 Select the customer account numbers for all the orders that were placed in February
 
 SELECT DISTINCT acctnum
 FROM customers 
@@ -23,7 +23,7 @@ INNER JOIN FebSales ON customers.order_id=Febsales.orderID
 AND LENGTH (OrderID) = 6
 AND orderID  <> 'Order ID '
 
---Which product was the cheapest one sold in January, and what was the price?
+-- 4 Which product was the cheapest one sold in January, and what was the price?
 
 SELECT product , MIN(price) 
 FROM JanSales 
@@ -36,7 +36,7 @@ SELECT distinct Product, price
 FROM BIT_DB.JanSales
 WHERE  price in (SELECT min(price) FROM BIT_DB.JanSales)
 
---What is the total revenue for each product sold in January? (Revenue can be calculated using the number of products sold and the price of the products).
+-- 5 What is the total revenue for each product sold in January? (Revenue can be calculated using the number of products sold and the price of the products).
 
 SELECT   Product , SUM ( price*Quantity) AS revenue
 FROM JanSales 
@@ -47,7 +47,7 @@ SELECT sum(quantity)*price as revenue
 FROM JanSales
 GROUP BY product
 
---Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+-- 6 Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
 select 
 sum(Quantity), 
 product, 
@@ -56,7 +56,7 @@ FROM FebSales
 WHERE location = '548 Lincoln St, Seattle, WA 98101'
 GROUP BY product
 
---How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+-- 7 How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
 
 select 
 count(distinct cust.acctnum), 
@@ -69,8 +69,59 @@ AND length(orderid) = 6
 AND orderid <> 'Order ID'
 
 
---List all the products sold in Los Angeles in February, and include how many of each were sold.
+-- 8 List all the products sold in Los Angeles in February, and include how many of each were sold.
 SELECT  Product ,SUM(Quantity ) 
 FROM FebSales 
 WHERE location LIKE '%Los Angeles%'
 GROUP BY Product 
+
+-- 9 Which locations in New York received at least 3 orders in January, and how many orders did they each receive?
+
+
+SELECT distinct location, count(orderID)
+FROM JanSales
+WHERE location LIKE '%NY%'
+AND length(orderid) = 6 
+AND orderid <> 'Order ID'
+GROUP BY location
+HAVING count(orderID)>2
+
+
+-- 10 How many of each type of headphone were sold in February?
+
+
+SELECT  Product ,SUM(Quantity) AS Quantity 
+FROM FebSales 
+WHERE Product LIKE '%Headphones%'
+GROUP BY Product 
+
+-- 11 What was the average amount spent per account in February?
+
+SELECT avg(quantity*price) AS average_amount 
+FROM FebSales fs 
+
+LEFT JOIN customers c 
+ON fs.orderID  =c.order_id
+
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID'
+
+-- 12 What was the average quantity of products purchased per account in February?
+
+select sum(quantity)/count(c.acctnum)
+FROM FebSales fs
+
+LEFT JOIN customers c
+ON fs.orderid=c.order_id
+
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID'
+
+-- 13 Which product brought in the most revenue in January and how much revenue did it bring in total?
+
+SELECT product, 
+sum(quantity*price)
+FROM JanSales 
+GROUP BY product
+ORDER BY sum(quantity*price) desc 
+LIMIT 1
